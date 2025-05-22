@@ -12,7 +12,14 @@ const connectDB = require('./connectdb.js'); // Import the connectDB function
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to explicitly allow the frontend origin
+app.use(cors({
+  origin: 'https://briefly-frontend.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
+
 app.use(express.json());
 
 // Create uploads directory if it doesn't exist
