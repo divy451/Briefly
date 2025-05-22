@@ -6,6 +6,10 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const dotenv = require('dotenv');
+const connectDB = require('./connectdb.js'); // Import the connectDB function
+
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -65,15 +69,8 @@ const handleUpload = (req, res, next) => {
   });
 };
 
-// MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/news', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('MongoDB connection error:', err);
-});
+// Connect to MongoDB using connectDB
+connectDB();
 
 // Check MongoDB connection status
 const checkDbConnection = (req, res, next) => {
@@ -108,7 +105,7 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Access denied' });
 
-  jwt.verify(token, 'your_jwt_secret', (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret', (err, user) => {
     if (err) return res.status(403).json({ error: 'Invalid token' });
     req.user = user;
     next();
@@ -131,7 +128,7 @@ app.post('/api/auth/login', async (req, res) => {
       console.log('Password mismatch for username:', username);
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const token = jwt.sign({ username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
     console.log('Login successful:', username, 'Token:', token);
     res.json({ token });
   } catch (error) {
