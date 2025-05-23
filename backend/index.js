@@ -112,7 +112,7 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-app.post('/api/auth/login', async (req, res) => {
+app.post('/auth/login', async (req, res) => {
   console.log('Login request:', req.body);
   const { username, password } = req.body;
   try {
