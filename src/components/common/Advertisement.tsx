@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 interface AdvertisementProps {
   type: 'banner' | 'square' | 'skyscraper';
   adSlot?: string;
+  adClient?: string; // Add new prop for dynamic ad client
 }
 
-const Advertisement: React.FC<AdvertisementProps> = ({ type, adSlot }) => {
+const Advertisement: React.FC<AdvertisementProps> = ({ type, adSlot, adClient }) => {
   const getAdSize = () => {
     switch (type) {
       case 'banner':
@@ -47,7 +48,7 @@ const Advertisement: React.FC<AdvertisementProps> = ({ type, adSlot }) => {
       <ins
         className="adsbygoogle"
         style={{ display: 'block' }}
-        data-ad-client="ca-pub-8618999712463527"
+        data-ad-client={adClient || "ca-pub-8618999712463527"} // Use adClient prop, default to original
         data-ad-slot={adSlot}
         data-ad-format="auto"
         data-full-width-responsive="true"

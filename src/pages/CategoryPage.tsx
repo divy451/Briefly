@@ -44,7 +44,7 @@ const CategoryPage: React.FC = () => {
                   ))}
                 </div>
                 
-                <Advertisement type="banner" adSlot="4095088830" />
+                <Advertisement type="banner" adSlot="3686800815" adClient="ca-pub-9084229487967369" />
                 
                 {articles.length > 8 && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
