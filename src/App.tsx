@@ -26,8 +26,20 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Instant scroll to top on route change (no smooth behavior)
-    window.scrollTo(0, 0);
+    // Define routes where scroll-to-top should NOT apply
+    const excludeRoutes = [
+      '/admin',        // Admin dashboard
+      '/admin/new',    // New article page
+      '/admin/edit',   // Edit article page (includes /admin/edit/:id)
+      '/admin/login',  // Admin login page
+    ];
+
+    // Apply scroll-to-top only if the current route is not in excludeRoutes
+    const shouldScrollToTop = !excludeRoutes.some(route => pathname.startsWith(route));
+
+    if (shouldScrollToTop) {
+      window.scrollTo(0, 0); // Instant scroll to top
+    }
   }, [pathname]); // Trigger on pathname change
 
   return null;
